@@ -17,7 +17,7 @@ class Check(advice_animal.Check):
                 try:
                     entry = section.entries[section.index("commands")]
                     for line in entry.value:
-                        line.text = line.text.replace("--show-source", "--output=full")
+                        line.text = line.text.replace("--show-source", "--output-format=full")
                 except KeyError:
                     pass
         path.write_text(obj.text)
