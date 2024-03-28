@@ -8,8 +8,11 @@ import advice_animal
 
 PY_TYPED = "py.typed"
 
-class Check(advice_animal.Check):
-    def pred(self) -> bool:
+
+class Check(advice_animal.BaseCheck):
+    confidence = advice_animal.FixConfidence.GREEN
+
+    def check(self) -> bool:
         """
         Returns whether this advice wants to run
         """

@@ -5,10 +5,14 @@ Functions decorated with @click.command should also use @click.version_option
 import ast
 import glob
 from pathlib import Path
+
 import advice_animal
 
-class Check(advice_animal.Check):
-    def pred(self) -> bool:
+
+class Check(advice_animal.BaseCheck):
+    confidence = advice_animal.FixConfidence.GREEN
+
+    def check(self) -> bool:
         """
         Returns whether this advice wants to run
         """
@@ -30,13 +34,15 @@ class Check(advice_animal.Check):
                 if isinstance(node, ast.FunctionDef) and node.decorator_list:
                     if (
                         # must be click-decorated
-                        ast.unparse(node.decorator_list[0]) in ("click.command()", "click.group()") and
+                        ast.unparse(node.decorator_list[0])
+                        in ("click.command()", "click.group()")
+                        and
                         # must not already have version_option
-                        not
-                        any(ast.unparse(x).startswith("click.version_option(")
-                        for x in node.decorator_list[1:])
-                        ):
-
+                        not any(
+                            ast.unparse(x).startswith("click.version_option(")
+                            for x in node.decorator_list[1:]
+                        )
+                    ):
                         if dry_run:
                             return True
                         else:
