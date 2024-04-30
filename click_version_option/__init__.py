@@ -20,7 +20,7 @@ class Check(advice_animal.BaseCheck):
     def _internal(self, path: Path, dry_run: bool):
         all_py_files = self.env.get(path.absolute().glob, "**/*.py")
         for f in all_py_files:
-            data = (path / f).read_text()
+            data = f.read_text()
             if "click" not in data:
                 continue
 
