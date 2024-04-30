@@ -3,7 +3,6 @@ Functions decorated with @click.command should also use @click.version_option
 """
 
 import ast
-import glob
 from pathlib import Path
 
 import advice_animal
@@ -19,9 +18,9 @@ class Check(advice_animal.BaseCheck):
         return bool(self._internal(self.env.path, dry_run=True))
 
     def _internal(self, path: Path, dry_run: bool):
-        all_py_files = self.env.get(glob.glob, "**/*.py", root_dir=path, recursive=True)
+        all_py_files = self.env.get(path.glob, "**/*.py")
         for f in all_py_files:
-            data = (path / f).read_text()
+            data = f.read_text()
             if "click" not in data:
                 continue
 
